@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ Niệm Của Chúng Ta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fef6f6;
+        }
+        
+        .heart-beat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .memory-card {
+            transition: all 0.3s ease;
+        }
+        
+        .memory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .music-player {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: white;
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        /* Mobile Menu Styles */
+        #mobile-menu {
+            width: 80%;
+            max-width: 300px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            right: 0;
+            left: auto;
+        }
+
+        #mobile-menu.show {
+            transform: translateX(0);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (min-width: 768px) {
+            #mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+
+        .quiz-container {
+            background: linear-gradient(to right, #9e0142, #d93b67);
+            padding: 40px 30px;
+            border-radius: 16px;
+            color: white;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .quiz-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .quiz-container p {
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background-color: rgba(0,0,0,0.2);
+            flex: 1;
+            min-width: 120px;
+            padding: 20px 10px;
+            border-radius: 12px;
+        }
+        .stat-box h3 {
+            font-size: 26px;
+            margin: 0 0 8px;
+        }
+        .stat-box span {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        #lock-screen { z-index: 9999; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .num-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 600; color: white; cursor: pointer; user-select: none; background: rgba(255,255,255,0.1); border: none; outline: none; transition: all 0.2s; }
+        .num-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
+        .num-btn.empty { visibility: hidden; }
+        .delete-btn { background: transparent; color: white; font-size: 20px; }
+        body {
+        -webkit-user-select: none; /* Chrome/Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+ */
+        user-select: none; /* Standard syntax */
+    }
+
+    /* Cho phép bôi đen trên các phần tử input và textarea */
+    input, textarea {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+    }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Màn hình nhập mật khẩu -->
+    <div id="lock-screen" class="fixed inset-0 flex flex-col justify-center items-center bg-gradient-to-br from-purple-700 to-pink-500 z-50 min-h-screen">
+        <i class="fas fa-lock text-4xl text-white mb-4"></i>
+        <h1 class="text-white text-2xl font-bold mb-2">Nhập mật khẩu</h1>
+        <p class="text-white text-opacity-80 mb-6">Vui lòng nhập mật khẩu 8 chữ số</p>
+        <div class="flex gap-3 mb-6" id="passcode-dots">
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-1"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-2"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-3"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-4"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-5"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-6"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-7"></div>
+            <div class="w-4 h-4 rounded-full bg-white bg-opacity-30" id="dot-8"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 max-w-xs mx-auto mb-4">
+            <button class="num-btn" data-number="1">1</button>
+            <button class="num-btn" data-number="2">2</button>
+            <button class="num-btn" data-number="3">3</button>
+            <button class="num-btn" data-number="4">4</button>
+            <button class="num-btn" data-number="5">5</button>
+            <button class="num-btn" data-number="6">6</button>
+            <button class="num-btn" data-number="7">7</button>
+            <button class="num-btn" data-number="8">8</button>
+            <button class="num-btn" data-number="9">9</button>
+            <button class="num-btn empty"></button>
+            <button class="num-btn" data-number="0">0</button>
+            <button class="num-btn delete-btn" id="delete-btn"><i class="fas fa-delete-left"></i></button>
+        </div>
+        <div id="passcode-error" class="text-red-200 text-sm mt-2 hidden">Sai mật khẩu, thử lại nhé!</div>
+    </div>
+    <!-- Toàn bộ app bọc trong main-app, ẩn mặc định -->
+    <div id="main-app" class="hidden">
+    <!-- Header -->
+    <header class="bg-pink-600 text-white shadow-lg sticky top-0 z-30">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-heart text-2xl heart-beat"></i>
+                    <h1 class="text-xl font-bold">Kỷ Niệm Của Chúng Ta</h1>
+                </div>
+                <nav class="hidden md:block">
+                    <ul class="flex space-x-6">
+                        <li><button data-tab="home" class="font-medium hover:text-pink-200 transition-colors tab-button active">Trang chủ</button></li>
+                        <li><button data-tab="memories" class="font-medium hover:text-pink-200 transition-colors tab-button">Ký ức</button></li>
+                        <li><button data-tab="countdown" class="font-medium hover:text-pink-200 transition-colors tab-button">Đếm ngày yêu</button></li>
+                        <li><button data-tab="music" class="font-medium hover:text-pink-200 transition-colors tab-button">Nhạc yêu thích</button></li>
+                        <li><button data-tab="quiz" class="font-medium hover:text-pink-200 transition-colors tab-button">Sự hiểu nhau</button></li>
+                        <li><button data-tab="plan" class="font-medium hover:text-pink-200 transition-colors tab-button">Kế hoạch tương lai</button></li>
+                        <li><button data-tab="album" class="font-medium hover:text-pink-200 transition-colors tab-button">Hình ảnh & Video</button></li>
+                        <li><button id="roundabout-menu-btn" class="font-medium hover:text-pink-200 transition-colors tab-button">Vòng quay</button></li>
+                        <li><button data-tab="letter" class="font-medium hover:text-pink-200 transition-colors tab-button">Thư gửi em</button></li>
+                        <li><button data-tab="mistake" class="font-medium hover:text-pink-200 transition-colors tab-button">Lỗi của anh</button></li>
+                    </ul>
+                </nav>
+                <button class="md:hidden text-2xl" id="mobile-menu-button">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8" id="main-content">
+        <!-- Nội dung sẽ được thay đổi bằng JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner mt-12 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-600">
+            <p>© 2025 Kỷ Niệm Của Chúng Ta | Được tạo với ❤️ dành riêng cho em</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div id="mobile-menu" class="fixed inset-y-0 right-0 bg-white z-50">
+        <div class="container mx-auto px-4 py-6 h-full overflow-y-auto">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-heart text-2xl text-pink-600"></i>
+                    <h1 class="text-xl font-bold text-pink-600">Kỷ Niệm Của Chúng Ta</h1>
+                </div>
+                <button id="close-mobile-menu" class="text-gray-600 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav>
+                <ul class="space-y-4">
+                    <li>
+                        <button data-tab="home" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-home mr-2"></i> Trang chủ
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="memories" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-images mr-2"></i> Ký ức
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="countdown" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-heartbeat mr-2"></i> Đếm ngày yêu
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="music" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-music mr-2"></i> Nhạc yêu thích
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="album" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-photo-video mr-2"></i> Hình ảnh & Video
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="quiz" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-brain mr-2"></i> Sự hiểu nhau
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="plan" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-calendar-alt mr-2"></i> Kế hoạch tương lai
+                        </button>
+                    </li>
+                    
+                    <li>
+                        <button id="roundabout-menu-btn-mobile" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-rotate mr-2"></i> Vòng quay ký ức
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="letter" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-envelope mr-2"></i> Thư
+                        </button>
+                    </li>
+                    <li>
+                        <button data-tab="mistake" class="w-full text-left py-2 px-4 rounded-lg font-medium hover:bg-pink-100 text-gray-800 tab-button">
+                            <i class="fas fa-bug mr-2"></i> Lỗi của anh
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Music Player (Hidden) -->
+    <audio id="music-player" class="hidden"></audio>
+
+    <!-- Templates -->
+    <template id="home-template">
+        <section class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4 text-pink-700">Chào mừng đến với nơi lưu giữ kỷ niệm của chúng ta!</h2>
+            <p class="text-xl mb-8 text-gray-700">Ở đây, chúng ta sẽ cùng nhau xây dựng một cuốn nhật ký tình yêu đầy màu sắc và ngọt ngào.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+                    <div class="text-5xl text-pink-500 mb-4">📸</div>
+                    <h3 class="text-xl font-semibold mb-2">Ký ức đáng nhớ</h3>
+                    <p class="text-gray-600">Lưu giữ những hình ảnh và khoảnh khắc đẹp nhất của chúng ta</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+                    <div class="text-5xl text-pink-500 mb-4">⏳</div>
+                    <h3 class="text-xl font-semibold mb-2">Đếm ngày yêu</h3>
+                    <p class="text-gray-600">Theo dõi từng ngày trôi qua kể từ ngày chúng ta bắt đầu</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+                    <div class="text-5xl text-pink-500 mb-4">🎵</div>
+                    <h3 class="text-xl font-semibold mb-2">Nhạc yêu thích</h3>
+                    <p class="text-gray-600">Nghe lại những bài hát đã gắn liền với câu chuyện của chúng ta</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-pink-400 to-purple-400 p-8 rounded-xl shadow-xl text-white">
+                <h3 class="text-2xl font-bold mb-4">Hôm nay là một ngày đặc biệt!</h3>
+                <p class="mb-6">Hãy cùng nhau tạo thêm thật nhiều kỷ niệm đẹp nhé. Dù có thể đôi khi mệt mỏi hay buồn bực, nhưng chỉ cần nhìn thấy em cười là anh cảm thấy mọi thứ đều trở nên tươi sáng hơn.</p>
+                <button class="bg-white text-pink-600 px-6 py-3 rounded-full font-semibold shadow-md hover:bg-pink-100 transition-colors">
+                    Xem tất cả kỷ niệm
+                </button>
+            </div>
+        </section>
+    </template>
+
+    <template id="memories-template">
+        <section class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center text-pink-700">Kho tàng ký ức của chúng ta</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="memories-container">
+                <!-- Kỷ niệm sẽ được thêm bằng JavaScript -->
+            </div>
+        </section>
+    </template>
+
+    <template id="countdown-template">
+        <section class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center text-pink-700">Chúng ta đã ở bên nhau</h2>
+            
+            <!-- Avatars and names -->
+            <div class="flex justify-center items-center space-x-8 mb-8">
+                <div class="flex flex-col items-center">
+                    <img src="./img/avtnam.jpg" alt="Nam" class="w-20 h-20 rounded-full border-4 border-pink-400 shadow-md mb-2">
+                    <span class="font-semibold text-pink-700">Nam</span>
+                </div>
+                <span class="text-3xl text-pink-400 font-bold">❤️</span>
+                <div class="flex flex-col items-center">
+                    <img src="./img/avtnu.jpg" alt="Nữ" class="w-20 h-20 rounded-full border-4 border-pink-400 shadow-md mb-2">
+                    <span class="font-semibold text-pink-700">Nữ</span>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-xl p-10 text-center max-w-md mx-auto">
+                <div class="text-6xl font-bold text-pink-600 mb-4" id="days-together">0</div>
+                <div class="text-xl text-gray-600 mb-8">ngày yêu thương</div>
+                
+                <div class="flex justify-center space-x-6 mb-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-pink-500" id="hours-together">00</div>
+                        <div class="text-sm text-gray-500">Giờ</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-pink-500" id="minutes-together">00</div>
+                        <div class="text-sm text-gray-500">Phút</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-pink-500" id="seconds-together">00</div>
+                        <div class="text-sm text-gray-500">Giây</div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-pink-100 to-purple-100 p-4 rounded-lg mb-6">
+                    <p class="text-pink-700">Tình yêu không phải là đếm ngày, mà là làm cho mỗi ngày đều đáng nhớ</p>
+                </div>
+                
+                <button class="bg-pink-500 hover:bg-pink-600 text-white font-medium px-6 py-3 rounded-full transition-colors">
+                    Xem lịch sử ngày yêu
+                </button>
+            </div>
+            <!-- Danh sách sự kiện quan trọng -->
+            <div class="mt-10 max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-pink-600 mb-4">Sự kiện quan trọng sắp tới</h3>
+                <ul id="important-dates-list" class="space-y-3">
+                    <!-- Danh sách sẽ được cập nhật bằng JS -->
+                </ul>
+            </div>
+        </section>
+    </template>
+
+    <template id="music-template">
+        <section class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center text-pink-700">Danh sách nhạc yêu thích</h2>
+            
+            <div class="bg-white rounded-xl shadow-xl p-6 max-w-md mx-auto">
+                <div class="flex items-center justify-center mb-6">
+                    <img id="album-cover" src="" alt="Album cover" class="w-24 h-24 rounded-lg shadow-md object-cover mr-4">
+                    <div class="text-left">
+                        <h3 class="font-bold text-lg text-pink-600" id="song-title">Bài hát</h3>
+                        <p class="text-gray-600 text-sm" id="song-artist">Nghệ sĩ</p>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="progress-bar mb-1">
+                        <div class="progress" id="progress-bar"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center items-center space-x-6">
+                    <button id="prev-song" class="text-gray-500 hover:text-pink-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    
+                    <button id="play-button" class="bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg transform transition-transform hover:scale-105 focus:outline-none">
+                        <i class="fas fa-play" id="play-icon"></i>
+                    </button>
+                    
+                    <button id="next-song" class="text-gray-500 hover:text-pink-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-bold text-gray-700 mb-3">Danh sách phát</h3>
+                    <ul class="space-y-2" id="playlist">
+                        <!-- Danh sách bài hát sẽ được thêm bằng JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="quiz-template">
+        <section class="flex justify-center items-center min-h-[60vh]">
+            <div class="quiz-container">
+                <h2>Bạn hiểu nhau đến đâu?</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <h3>85%</h3>
+                        <span>Hiểu tính cách</span>
+                    </div>
+                    <div class="stat-box">
+                        <h3>92%</h3>
+                        <span>Sở thích</span>
+                    </div>
+                    <div class="stat-box">
+                        <h3>78%</h3>
+                        <span>Thói quen</span>
+                    </div>
+                    <div class="stat-box">
+                        <h3>95%</h3>
+                        <span>Tình cảm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="plan-template">
+        <section class="min-h-[60vh]">
+            <style>
+                body.plan-tab {
+                    background-color: #2c002d !important;
+                    color: #fff !important;
+                }
+                .plan-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                }
+                .plan-card {
+                    flex: 1;
+                    background-color: #1e1e1e;
+                    padding: 24px;
+                    border-radius: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 280px;
+                    max-width: 400px;
+                    position: relative;
+                }
+                .plan-icon {
+                    background-color: #8a004f;
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                }
+                .plan-title {
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-bottom: 10px;
+                }
+                .plan-desc {
+                    color: #ccc;
+                    font-size: 15px;
+                    line-height: 1.5;
+                    margin-bottom: 15px;
+                }
+                .plan-date {
+                    font-size: 14px;
+                    color: #bbb;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                .plan-date i {
+                    font-style: normal;
+                    font-size: 16px;
+                }
+                @media (max-width: 768px) {
+                    .plan-container {
+                        flex-direction: column;
+                    }
+                }
+            </style>
+            <h2 style="color:#ff4081; margin-bottom:30px;">Kế hoạch tương lai</h2>
+            <div class="plan-container">
+                <!-- Kết hôn -->
+                <div class="plan-card">
+                    <div class="plan-icon">💍</div>
+                    <div class="plan-title">Báo nhau</div>
+                    <div class="plan-desc"></div>
+                    <div class="plan-date"><i>📅</i> Dự kiến: 20/10/2025</div>
+                </div>
+                <!-- Mua nhà -->
+                <div class="plan-card">
+                    <div class="plan-icon">🏠</div>
+                    <div class="plan-title">Mua nhà</div>
+                    <div class="plan-desc">Căn hộ 2 phòng ngủ tại khu đô thị mới, có ban công hướng Nam đón nắng.</div>
+                    <div class="plan-date"><i>📅</i> Dự kiến: 2024</div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="album-template">
+        <section class="flex justify-center items-center min-h-[60vh] bg-black">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+            <div class="swiper" style="width:90vw;max-width:800px;height:90vh;border-radius:12px;overflow:hidden;box-shadow:0 0 20px rgba(255,255,255,0.2);">
+                <div class="swiper-wrapper" id="album">
+                    <!-- Ảnh sẽ được thêm tự động ở đây -->
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+    </template>
+
+    <template id="letter-template">
+        <section class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center text-pink-700">Thư gửi em</h2>
+            
+            <!-- Form viết thư mới -->
+            <div class="bg-white rounded-xl shadow-xl p-8 max-w-2xl mx-auto mb-8">
+                <h3 class="text-xl font-bold text-pink-600 mb-6">Viết thư gửi em 💖</h3>
+                <form id="new-letter-form">
+                    <div class="mb-4">
+                        <label for="letter-title" class="block text-sm font-medium text-gray-700 mb-2">Tiêu đề thư:</label>
+                        <input type="text" id="letter-title" name="title" placeholder="Nhập tiêu đề thư..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="letter-content" class="block text-sm font-medium text-gray-700 mb-2">Nội dung thư:</label>
+                        <textarea id="letter-content" name="content" rows="6" placeholder="Viết những lời yêu thương cho em..." 
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent" required></textarea>
+                    </div>
+                    <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i>Gửi thư 💖
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Danh sách thư đã viết -->
+            <div class="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-pink-600 mb-6">Những bức thư đã viết ✨</h3>
+                <div id="letters-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Thư sẽ được thêm bằng JavaScript -->
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="mistake-template">
+      <style>
+        body.mistake-tab {
+          background: linear-gradient(to right, #ffdde1, #ee9ca7) !important;
+        }
+        .mistake-form-container h1 {
+          text-align: center;
+          color: #d72638;
+        }
+        .mistake-form-container form {
+          max-width: 600px;
+          background: white;
+          margin: auto;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .mistake-form-container label {
+          font-weight: bold;
+          margin-top: 15px;
+          display: block;
+        }
+        .mistake-form-container textarea {
+          width: 100%;
+          border-radius: 8px;
+          padding: 10px;
+          margin-top: 5px;
+          border: 1px solid #ccc;
+        }
+        .mistake-form-container button {
+          background: #ff6f61;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          margin-top: 20px;
+        }
+        .mistake-form-container .success {
+          text-align: center;
+          color: green;
+          font-weight: bold;
+          margin-top: 20px;
+        }
+        .mistake-entries {
+          max-width: 600px;
+          margin: 40px auto;
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .mistake-entries .entry {
+          border-left: 5px solid #ff6f61;
+          background: #fff9f9;
+          padding: 10px;
+          margin-bottom: 15px;
+          border-radius: 10px;
+        }
+        .mistake-entries .stats {
+          text-align: center;
+          font-size: 18px;
+          color: #333;
+          margin-top: 10px;
+        }
+      </style>
+      <div class="mistake-form-container">
+        <h1>Em giận anh vì... 🥺</h1>
+        <form id="loveForm">
+          <label>Lỗi của anh:</label>
+          <textarea name="data[mistake]" placeholder="Ví dụ: Quên ngày kỷ niệm..." required></textarea>
+          <label>Em muốn anh làm gì:</label>
+          <textarea name="data[suggestion]" placeholder="Ví dụ: Viết thư tay, xin lỗi nhẹ nhàng..." required></textarea>
+          <input type="hidden" name="data[time]" id="timestamp" />
+          <button type="submit">Gửi cho anh 📨</button>
+          <div class="success" id="successMsg" style="display: none;">Gửi thành công rồi nha! 💌</div>
+        </form>
+      </div>
+      <div class="mistake-entries" id="entries">
+        <h2>Danh sách lỗi của anh 📜</h2>
+        <div class="stats" id="errorCount">Đang tải thống kê...</div>
+        <!-- Dữ liệu sẽ được chèn vào đây -->
+      </div>
+    </template>
+
+    <script>
+        // Dữ liệu ứng dụng
+        const appData = {
+            activeTab: 'home',
+            daysTogether: 0,
+            musicPlaying: false,
+            currentSongIndex: 0,
+            songs: [
+                {
+                    title: "Chúng Ta Của Hiện Tại", ///// tên bài hát
+                    artist: "Sơn Tùng M-TP",     //// nghệ sĩ
+                    src: "./music/chungtacuahientay.mp3",   
+                    cover: "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228"
+                },
+                {
+                    title: "Có Chắc Yêu Là Đây",
+                    artist: "Sơn Tùng M-TP",
+                    src: "./music/cochacyeuladay.mp3",
+                    cover: "https://i.scdn.co/image/ab67616d00001e02663e3c7b4c3347e610b0a5a0"
+                },
+                {
+                    title: "Nơi Này Có Anh",
+                    artist: "Sơn Tùng M-TP",
+                    src: "./music/noinaycoanh.mp3",
+                    cover: "https://i.scdn.co/image/ab67616d00001e02a48964b5d9a3d6968ae3e0de"
+                },
+                {
+                    title: "Anh Là Của Em",
+                    artist: "Karik",
+                    src: "./music/anhlacuaem.mp3",
+                    cover: "https://i.scdn.co/image/ab67616d00001e02a48964b5d9a3d6968ae3e0de"
+                }
+            ],
+            memories: [
+                {
+                    id: 1,
+                    title: "Ngày đầu tiên gặp nhau",
+                    date: "29/09/2024",
+                    image: "./img/10.png",
+                    description: "Ngày đầu tiên chúng ta gặp nhau tại trường tặng cho sửa cho em."
+                },
+                {
+                    id: 2,
+                    title: "Đi chơi cùng nhau",
+                    date: "",
+                    image: "./img/3.jpg",
+                    description: "Kỷ niệm chuyến du lịch đầu tiên của hai đứa. Cảnh đẹp, người đẹp, mọi thứ thật hoàn hảo..."
+                },
+                {
+                    id: 3,
+                    title: "Đi chụp hình nè",
+                    date: "30/7/2025",
+                    image: "./img/9.jpg",
+                    description: "Những tấm ảnh tự chụp cùng nhau<3"
+                }
+            ],
+            importantDates: [
+                { name: "Sinh nhật anh", date: "22/11/", countdown: "Còn 120 ngày" },
+                { name: "Sinh nhật em", date: "09/11/", countdown: "Còn 40 ngày" },
+                { name: "Ngày kỷ niệm", date: "08/10/", countdown: "Còn 85 ngày" },
+                { name: "Valentine", date: "14/2/", countdown: "Còn 215 ngày" }
+            ],
+            letters: [
+                {
+                    id: 1,
+                    title: "Thư đầu tiên gửi em",
+                    date: "2024-10-08",
+                    content: "Em yêu, từ ngày đầu tiên gặp em, anh đã biết rằng em chính là người mà anh đã tìm kiếm suốt cuộc đời này. Mỗi ngày bên em là một ngày hạnh phúc, mỗi nụ cười của em làm trái tim anh rung động. Anh yêu em rất nhiều! ❤️"
+                },
+                {
+                    id: 2,
+                    title: "Những lời yêu thương",
+                    date: "2024-11-15",
+                    content: "Em có biết không, mỗi khi nhìn thấy em, anh cảm thấy như cả thế giới đều dừng lại. Em là ánh sáng trong cuộc đời anh, là niềm vui mỗi sáng thức dậy. Anh mong rằng chúng ta sẽ mãi mãi bên nhau, cùng nhau xây dựng một tương lai tươi đẹp. Yêu em! 💕"
+                },
+                {
+                    id: 3,
+                    title: "Lời hứa của anh",
+                    date: "2024-12-20",
+                    content: "Em yêu, anh hứa sẽ luôn yêu thương, chăm sóc và bảo vệ em. Anh sẽ làm tất cả để em luôn được hạnh phúc. Dù có khó khăn gì, anh sẽ luôn ở bên em, cùng em vượt qua mọi thử thách. Anh yêu em vô cùng! 🌹"
+                }
+            ]
+        };
+
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', function() {
+            // Nếu có hash #main thì bỏ qua màn hình khóa
+            if (window.location.hash === '#main') {
+                const lockScreen = document.getElementById('lock-screen');
+                const mainApp = document.getElementById('main-app');
+                if (lockScreen && mainApp) {
+                    lockScreen.classList.add('hidden');
+                    mainApp.classList.remove('hidden');
+                }
+                // Xóa hash để không ảnh hưởng lần sau
+                history.replaceState(null, '', window.location.pathname);
+            }
+            // Thêm sự kiện cho nút Vòng quay (menu desktop)
+            const roundaboutBtn = document.getElementById('roundabout-menu-btn');
+            if (roundaboutBtn) {
+                roundaboutBtn.addEventListener('click', function() {
+                    window.location.href = 'vongquay.html';
+                });
+            }
+            // Thêm sự kiện cho nút Vòng quay (menu mobile)
+            const roundaboutBtnMobile = document.getElementById('roundabout-menu-btn-mobile');
+            if (roundaboutBtnMobile) {
+                roundaboutBtnMobile.addEventListener('click', function() {
+                    window.location.href = 'vongquay.html';
+                });
+            }
+            // Tính số ngày yêu nhau
+            calculateLoveDays();
+            
+            // Cài đặt trình phát nhạc
+            setupMusicPlayer();
+            
+            // Hiển thị tab mặc định
+            showTab(appData.activeTab);
+            
+            // Thêm sự kiện cho các nút tab
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tab = this.getAttribute('data-tab');
+                    showTab(tab);
+                });
+            });
+            
+            // Xử lý menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.add('show');
+                menuOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeMobileMenuButton.addEventListener('click', closeMobileMenu);
+            
+            menuOverlay.addEventListener('click', closeMobileMenu);
+
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('show');
+                menuOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // Đóng menu khi chọn một tab trên mobile
+            document.querySelectorAll('#mobile-menu .tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    closeMobileMenu();
+                    const tab = this.getAttribute('data-tab');
+                    showTab(tab);
+                });
+            });
+
+            // Màn hình khóa
+            const lockScreen = document.getElementById('lock-screen');
+            const mainApp = document.getElementById('main-app');
+            const passcodeDots = [];
+            for (let i = 1; i <= 8; i++) passcodeDots.push(document.getElementById(`dot-${i}`));
+            const numButtons = lockScreen.querySelectorAll('.num-btn[data-number]');
+            const deleteBtn = document.getElementById('delete-btn');
+            const passcodeError = document.getElementById('passcode-error');
+            let enteredPasscode = '';
+            const correctPasscode = '09112009'; // Đổi mật khẩu tại đây
+            function updateDots() {
+                passcodeDots.forEach((dot, idx) => {
+                    if (idx < enteredPasscode.length) dot.classList.add('bg-white', 'shadow-lg');
+                    else dot.classList.remove('bg-white', 'shadow-lg');
+                });
+            }
+            numButtons.forEach(btn => btn.addEventListener('click', function() {
+                if (enteredPasscode.length < 8) {
+                    enteredPasscode += this.getAttribute('data-number');
+                    updateDots();
+                    if (enteredPasscode.length === 8) {
+                        if (enteredPasscode === correctPasscode) {
+                            lockScreen.classList.add('hidden');
+                            mainApp.classList.remove('hidden');
+                        } else {
+                            passcodeError.classList.remove('hidden');
+                            setTimeout(() => {
+                                enteredPasscode = '';
+                                updateDots();
+                                passcodeError.classList.add('hidden');
+                            }, 800);
+                        }
+                    }
+                }
+            }));
+            deleteBtn.addEventListener('click', function() {
+                if (enteredPasscode.length > 0) {
+                    enteredPasscode = enteredPasscode.slice(0, -1);
+                    updateDots();
+                }
+            });
+            updateDots();
+
+            // Thêm sự kiện cho nút 'Xem tất cả kỷ niệm' ở Home
+            document.body.addEventListener('click', function(e) {
+                if (e.target.closest('button') && e.target.textContent.includes('Xem tất cả kỷ niệm')) {
+                    showTab('album');
+                }
+            });
+        });
+
+        // Tính số ngày yêu nhau
+        function calculateLoveDays() {
+            const startDate = new Date("2024-10-08");
+            const today = new Date();
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            appData.daysTogether = diffDays;
+            
+            // Cập nhật hiển thị nếu tab countdown đang hiển thị
+            if (appData.activeTab === 'countdown') {
+                document.getElementById('days-together').textContent = diffDays.toLocaleString();
+            }
+        }
+
+        // Hiển thị tab được chọn
+        function showTab(tabName) {
+            appData.activeTab = tabName;
+            
+            // Cập nhật trạng thái active của các nút tab
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (button.getAttribute('data-tab') === tabName) {
+                    button.classList.add('text-pink-600');
+                    button.classList.remove('text-gray-600');
+                } else {
+                    button.classList.remove('text-pink-600');
+                    button.classList.add('text-gray-600');
+                }
+            });
+            
+            // Lấy template tương ứng
+            const template = document.getElementById(`${tabName}-template`);
+            const content = template.content.cloneNode(true);
+            
+            // Xóa nội dung hiện tại và thêm nội dung mới
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = '';
+            mainContent.appendChild(content);
+            
+            // Tải dữ liệu cụ thể cho tab
+            switch(tabName) {
+                case 'memories':
+                    loadMemories();
+                    break;
+                case 'music':
+                    loadMusicPlayer();
+                    // Thêm sự kiện cho các nút điều khiển nhạc
+                    document.getElementById('play-button').addEventListener('click', togglePlay);
+                    document.getElementById('prev-song').addEventListener('click', prevSong);
+                    document.getElementById('next-song').addEventListener('click', nextSong);
+                    break;
+                case 'countdown':
+                    updateLoveTime();
+                    if (window.loveInterval) clearInterval(window.loveInterval);
+                    window.loveInterval = setInterval(updateLoveTime, 1000);
+                    updateImportantDates();
+                    break;
+                case 'quiz':
+                    // Không cần tải dữ liệu cụ thể cho quiz, chỉ hiển thị giao diện
+                    break;
+                case 'plan':
+                    document.body.classList.add('plan-tab');
+                    break;
+                case 'album':
+                    // Thêm script Swiper nếu chưa có
+                    if (!document.getElementById('swiper-script')) {
+                        const s = document.createElement('script');
+                        s.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+                        s.id = 'swiper-script';
+                        document.body.appendChild(s);
+                        s.onload = renderAlbum;
+                    } else {
+                        renderAlbum();
+                    }
+                    break;
+                case 'letter':
+                    loadLetters();
+                    break;
+                case 'mistake':
+                    document.body.classList.add('mistake-tab');
+                    showMistakeTab();
+                    break;
+                default:
+                    document.body.classList.remove('plan-tab');
+                    document.body.classList.remove('mistake-tab');
+                    break;
+            }
+        }
+
+        // Tải danh sách kỷ niệm
+        function loadMemories() {
+            const container = document.getElementById('memories-container');
+            container.innerHTML = '';
+            
+            appData.memories.forEach(memory => {
+                const memoryElement = document.createElement('div');
+                memoryElement.className = 'bg-white rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:shadow-2xl hover:-translate-y-1 memory-card';
+                memoryElement.innerHTML = `
+                    <img src="${memory.image}" alt="${memory.title}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2 text-pink-600">${memory.title}</h3>
+                        <p class="text-gray-600 text-sm">${memory.date} - ${memory.description}</p>
+                        <div class="mt-3 flex justify-between text-sm text-gray-500">
+                            <span>📷 Hình ảnh</span>
+                            <span>❤️ Thêm vào yêu thích</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(memoryElement);
+            });
+        }
+
+        // Cài đặt trình phát nhạc
+        function setupMusicPlayer() {
+            const audio = document.getElementById('music-player');
+            let progressInterval;
+            
+            // Sự kiện khi metadata của bài hát được tải
+            audio.addEventListener('loadedmetadata', function() {
+                document.getElementById('duration').textContent = formatTime(audio.duration);
+            });
+            
+            // Sự kiện khi bài hát kết thúc
+            audio.addEventListener('ended', function() {
+                nextSong();
+            });
+            
+            // Sự kiện khi thời gian phát thay đổi
+            audio.addEventListener('timeupdate', function() {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+                document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+            });
+        }
+
+        // Tải trình phát nhạc
+        function loadMusicPlayer() {
+            const audio = document.getElementById('music-player');
+            
+            // Cập nhật thông tin bài hát hiện tại
+            updateCurrentSong();
+            
+            // Tải danh sách phát
+            const playlist = document.getElementById('playlist');
+            playlist.innerHTML = '';
+            
+            appData.songs.forEach((song, index) => {
+                const li = document.createElement('li');
+                li.className = `p-2 rounded cursor-pointer transition-colors playlist-item ${index === appData.currentSongIndex ? 'bg-pink-100 text-pink-700' : 'hover:bg-gray-100'}`;
+                li.setAttribute('data-index', index);
+                li.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">${song.title}</span>
+                        <span class="text-xs text-gray-500">${song.artist}</span>
+                    </div>
+                `;
+                playlist.appendChild(li);
+                
+                // Thêm sự kiện click cho từng bài hát trong playlist
+                li.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    playSong(index);
+                });
+            });
+            
+            // Nếu đang phát nhạc, tiếp tục phát bài hát hiện tại
+            if (appData.musicPlaying) {
+                audio.src = appData.songs[appData.currentSongIndex].src;
+                audio.play();
+            }
+        }
+
+        // Cập nhật thông tin bài hát hiện tại
+        function updateCurrentSong() {
+            const currentSong = appData.songs[appData.currentSongIndex];
+            document.getElementById('album-cover').src = currentSong.cover;
+            document.getElementById('song-title').textContent = currentSong.title;
+            document.getElementById('song-artist').textContent = currentSong.artist;
+            
+            // Cập nhật trạng thái active trong playlist
+            document.querySelectorAll('.playlist-item').forEach((item, index) => {
+                if (index === appData.currentSongIndex) {
+                    item.classList.add('bg-pink-100', 'text-pink-700');
+                    item.classList.remove('hover:bg-gray-100');
+                } else {
+                    item.classList.remove('bg-pink-100', 'text-pink-700');
+                    item.classList.add('hover:bg-gray-100');
+                }
+            });
+        }
+
+        // Phát/tạm dừng nhạc
+        function togglePlay() {
+            const audio = document.getElementById('music-player');
+            const playIcon = document.getElementById('play-icon');
+            
+            if (appData.musicPlaying) {
+                audio.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                appData.musicPlaying = false;
+            } else {
+                // Nếu chưa có src, đặt src bài hát hiện tại
+                if (!audio.src) {
+                    audio.src = appData.songs[appData.currentSongIndex].src;
+                }
+                audio.play().then(() => {
+                    playIcon.classList.remove('fa-play');
+                    playIcon.classList.add('fa-pause');
+                    appData.musicPlaying = true;
+                }).catch(error => {
+                    console.error("Lỗi khi phát nhạc:", error);
+                });
+            }
+        }
+
+        // Phát bài hát cụ thể
+        function playSong(index) {
+            const audio = document.getElementById('music-player');
+            appData.currentSongIndex = index;
+            audio.src = appData.songs[index].src;
+            audio.play().then(() => {
+                appData.musicPlaying = true;
+                
+                // Cập nhật giao diện
+                updateCurrentSong();
+                document.getElementById('play-icon').classList.remove('fa-play');
+                document.getElementById('play-icon').classList.add('fa-pause');
+            }).catch(error => {
+                console.error("Lỗi khi phát nhạc:", error);
+            });
+        }
+
+        // Bài hát tiếp theo
+        function nextSong() {
+            appData.currentSongIndex = (appData.currentSongIndex + 1) % appData.songs.length;
+            playSong(appData.currentSongIndex);
+        }
+
+        // Bài hát trước đó
+        function prevSong() {
+            appData.currentSongIndex = (appData.currentSongIndex - 1 + appData.songs.length) % appData.songs.length;
+            playSong(appData.currentSongIndex);
+        }
+
+        // Định dạng thời gian (phút:giây)
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function updateLoveTime() {
+            const startDate = new Date("2024-10-08T00:00:00"); // Ngày bắt đầu yêu
+            const now = new Date();
+            let diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -= days * (1000 * 60 * 60 * 24);
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            diff -= hours * (1000 * 60 * 60);
+            const minutes = Math.floor(diff / (1000 * 60));
+            diff -= minutes * (1000 * 60);
+            const seconds = Math.floor(diff / 1000);
+            
+            document.getElementById('days-together').textContent = days;
+            document.getElementById('hours-together').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes-together').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds-together').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        function updateImportantDates() {
+            const list = document.getElementById('important-dates-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const today = new Date();
+            appData.importantDates.forEach(event => {
+                // Xử lý ngày dạng dd/mm/yyyy hoặc dd/mm/
+                let [day, month, year] = event.date.split('/');
+                if (!year || year === '') {
+                    year = today.getFullYear();
+                }
+                let eventDate = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00`);
+                // Nếu sự kiện đã qua trong năm nay, chuyển sang năm sau
+                if (eventDate < today) {
+                    eventDate.setFullYear(eventDate.getFullYear() + 1);
+                }
+                const diffTime = eventDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const daysText = diffDays > 0 ? `Còn ${diffDays} ngày` : (diffDays === 0 ? 'Hôm nay!' : 'Đã qua');
+                const li = document.createElement('li');
+                li.className = 'flex justify-between items-center bg-pink-50 rounded-lg px-4 py-2';
+                li.innerHTML = `<span class="font-medium text-gray-700">${event.name}</span><span class="text-pink-600 font-semibold">${daysText}</span>`;
+                list.appendChild(li);
+            });
+        }
+
+        function renderAlbum() {
+            const images = [
+                "./img/1.jpg",
+                "./img/2.jpg",
+                "./img/3.jpg",
+                "./img/4.jpg",
+                "./img/5.jpg",
+                "./img/6.jpg",
+                "./img/7.jpg",
+                "./img/8.jpg",
+                "./img/9.jpg",
+            ];
+            const album = document.getElementById("album");
+            if (!album) return;
+            album.innerHTML = '';
+            images.forEach(link => {
+                const slide = document.createElement("div");
+                slide.className = "swiper-slide";
+                slide.innerHTML = `<img src="${link}" alt="Ảnh album">`;
+                album.appendChild(slide);
+            });
+            if (window.albumSwiper) window.albumSwiper.destroy(true, true);
+            window.albumSwiper = new Swiper('.swiper', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
+                },
+                loop: true
+            });
+        }
+
+        // Tải danh sách thư
+        function loadLetters() {
+            const container = document.getElementById('letters-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.letters.forEach(letter => {
+                const letterElement = document.createElement('div');
+                letterElement.className = 'bg-white rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:shadow-2xl hover:-translate-y-1 memory-card';
+                letterElement.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-lg text-pink-600">${letter.title}</h3>
+                            <span class="text-sm text-gray-500">${formatDate(letter.date)}</span>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed mb-4">${letter.content.substring(0, 150)}${letter.content.length > 150 ? '...' : ''}</p>
+                        <div class="flex justify-between items-center">
+                            <button class="text-pink-500 hover:text-pink-700 text-sm font-medium read-letter-btn" data-letter-id="${letter.id}">
+                                <i class="fas fa-eye mr-1"></i>Đọc thư
+                            </button>
+                            <div class="flex space-x-2">
+                                <button class="text-gray-500 hover:text-pink-500 text-sm edit-letter-btn" data-letter-id="${letter.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-red-500 text-sm delete-letter-btn" data-letter-id="${letter.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(letterElement);
+            });
+            
+            // Thêm sự kiện cho các nút
+            addLetterEventListeners();
+            
+            // Thêm sự kiện cho form viết thư mới
+            const newLetterForm = document.getElementById('new-letter-form');
+            if (newLetterForm) {
+                newLetterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addNewLetter();
+                });
+            }
+        }
+
+        // Thêm sự kiện cho các nút thư
+        function addLetterEventListeners() {
+            // Nút đọc thư
+            document.querySelectorAll('.read-letter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const letterId = parseInt(this.getAttribute('data-letter-id'));
+                    const letter = appData.letters.find(l => l.id === letterId);
+                    if (letter) {
+                        showLetterModal(letter);
+                    }
+                });
+            });
+            
+            // Nút sửa thư
+            document.querySelectorAll('.edit-letter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const letterId = parseInt(this.getAttribute('data-letter-id'));
+                    const letter = appData.letters.find(l => l.id === letterId);
+                    if (letter) {
+                        editLetter(letter);
+                    }
+                });
+            });
+            
+            // Nút xóa thư
+            document.querySelectorAll('.delete-letter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const letterId = parseInt(this.getAttribute('data-letter-id'));
+                    if (confirm('Bạn có chắc muốn xóa thư này?')) {
+                        deleteLetter(letterId);
+                    }
+                });
+            });
+        }
+
+        // Hiển thị modal đọc thư
+        function showLetterModal(letter) {
+            // Tạo modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-pink-600">${letter.title}</h3>
+                        <button class="text-gray-500 hover:text-gray-700 text-2xl close-modal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm text-gray-500 mb-4">${formatDate(letter.date)}</div>
+                    <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">${letter.content}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Sự kiện đóng modal
+            modal.querySelector('.close-modal').addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+            
+            // Đóng modal khi click bên ngoài
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+
+        // Sửa thư
+        function editLetter(letter) {
+            // Điền form với dữ liệu thư hiện tại
+            document.getElementById('letter-title').value = letter.title;
+            document.getElementById('letter-content').value = letter.content;
+            
+            // Thay đổi nút submit
+            const submitBtn = document.querySelector('#new-letter-form button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Cập nhật thư';
+            submitBtn.setAttribute('data-edit-id', letter.id);
+            
+            // Scroll đến form
+            document.getElementById('new-letter-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Xóa thư
+        function deleteLetter(letterId) {
+            const index = appData.letters.findIndex(l => l.id === letterId);
+            if (index !== -1) {
+                appData.letters.splice(index, 1);
+                loadLetters();
+                alert('Đã xóa thư thành công!');
+            }
+        }
+
+        // Thêm thư mới hoặc cập nhật thư
+        function addNewLetter() {
+            const title = document.getElementById('letter-title').value;
+            const content = document.getElementById('letter-content').value;
+            const submitBtn = document.querySelector('#new-letter-form button[type="submit"]');
+            const editId = submitBtn.getAttribute('data-edit-id');
+            
+            if (!title || !content) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+            
+            if (editId) {
+                // Cập nhật thư hiện có
+                const letterIndex = appData.letters.findIndex(l => l.id === parseInt(editId));
+                if (letterIndex !== -1) {
+                    appData.letters[letterIndex].title = title;
+                    appData.letters[letterIndex].content = content;
+                    
+                    // Reset form và nút
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Gửi thư 💖';
+                    submitBtn.removeAttribute('data-edit-id');
+                    
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4';
+                    successMessage.innerHTML = 'Thư đã được cập nhật thành công! 💖';
+                    
+                    const form = document.getElementById('new-letter-form');
+                    form.parentNode.insertBefore(successMessage, form);
+                    
+                    setTimeout(() => {
+                        if (successMessage.parentNode) {
+                            successMessage.parentNode.removeChild(successMessage);
+                        }
+                    }, 3000);
+                }
+            } else {
+                // Thêm thư mới
+                const newLetter = {
+                    id: Date.now(), // Sử dụng timestamp làm ID
+                    title: title,
+                    content: content,
+                    date: new Date().toISOString().split('T')[0] // Format YYYY-MM-DD
+                };
+                
+                appData.letters.unshift(newLetter); // Thêm vào đầu danh sách
+                
+                const successMessage = document.createElement('div');
+                successMessage.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4';
+                successMessage.innerHTML = 'Thư đã được gửi thành công! 💖';
+                
+                const form = document.getElementById('new-letter-form');
+                form.parentNode.insertBefore(successMessage, form);
+                
+                setTimeout(() => {
+                    if (successMessage.parentNode) {
+                        successMessage.parentNode.removeChild(successMessage);
+                    }
+                }, 3000);
+            }
+            
+            loadLetters();
+            document.getElementById('new-letter-form').reset();
+        }
+
+        // Định dạng ngày
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        // Chặn bôi đen văn bản
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        // Chặn menu chuột phải
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Chặn copy (Ctrl+C)
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('Không cho phép sao chép nội dung!');
+        });
+
+        // Chặn cut (Ctrl+X)
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+        });
+
+        // Chặn paste (Ctrl+V)
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+        });
+
+        // Hiển thị tab Lỗi của anh
+        function showMistakeTab() {
+          // Lấy template
+          const template = document.getElementById('mistake-template');
+          const content = template.content.cloneNode(true);
+          const mainContent = document.getElementById('main-content');
+          mainContent.innerHTML = '';
+          mainContent.appendChild(content);
+
+          // Gắn lại sự kiện cho form và load dữ liệu
+          setTimeout(() => {
+            const form = document.getElementById("loveForm");
+            if (form) {
+              form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                document.getElementById("timestamp").value = new Date().toLocaleString();
+                const formData = new FormData(form);
+                fetch("https://sheetdb.io/api/v1/9y1uawujxex5m", {
+                  method: "POST",
+                  body: formData
+                })
+                .then(res => res.json())
+                .then(() => {
+                  document.getElementById("successMsg").style.display = "block";
+                  form.reset();
+                  loadEntries();
+                });
+              });
+            }
+            window.loadEntries = function() {
+              fetch("https://sheetdb.io/api/v1/9y1uawujxex5m")
+                .then(response => response.json())
+                .then(data => {
+                  const entriesDiv = document.getElementById("entries");
+                  const countDiv = document.getElementById("errorCount");
+                  entriesDiv.innerHTML = '<h2>Danh sách lỗi của anh 📜</h2>';
+                  countDiv.textContent = `Tổng cộng anh đã gây ra ${data.length} lỗi 😢`;
+                  entriesDiv.appendChild(countDiv);
+                  data.reverse().forEach(entry => {
+                    const div = document.createElement("div");
+                    div.className = "entry";
+                    div.innerHTML = `
+                      <p><strong>Lỗi:</strong> ${entry.mistake}</p>
+                      <p><strong>Em muốn anh:</strong> ${entry.suggestion}</p>
+                      <p style="font-size: 0.85em; color: gray;">🕒 ${entry.time}</p>
+                    `;
+                    entriesDiv.appendChild(div);
+                  });
+                });
+            }
+            window.loadEntries();
+          }, 0);
+        }
+
+
+    </script>
+    
+  <script>
+    // Chặn chuột phải
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+    });
+
+    // Chặn phím tắt
+    document.addEventListener("keydown", function(e) {
+      // Dùng tổ hợp phím Ctrl + ...
+      if (e.ctrlKey) {
+        const blocked = ['u', 's', 'c', 'x', 'v', 'p', 'a'];
+        if (blocked.includes(e.key.toLowerCase())) {
+          e.preventDefault();
+        }
+      }
+
+      // Chặn F12
+      if (e.key === "F12") {
+        e.preventDefault();
+      }
+
+      // Chặn Ctrl+Shift+I / J / C
+      if (e.ctrlKey && e.shiftKey) {
+        const blockedCombo = ['i', 'j', 'c'];
+        if (blockedCombo.includes(e.key.toLowerCase())) {
+          e.preventDefault();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

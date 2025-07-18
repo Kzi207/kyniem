@@ -1,0 +1,1099 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+   
+        
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="https://love.tsonit.com/love.png" sizes="16x16">
+    
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+  --primary-clr: #5c4033;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Tagesschrift, system-ui;
+  background: #f5e8dc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  /* === THAY Äá»”I QUAN TRá»ŒNG: NgÄƒn cháº·n triá»‡t Ä‘á»ƒ scroll ngang === */
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  padding: 1rem;
+}
+
+h2 {
+  font-size: clamp(1.3rem, 5vw, 2rem);
+  text-align: center;
+  color: var(--primary-clr);
+  margin-bottom: 1rem;
+}
+
+.carousel-container {
+  /* === THAY Äá»”I: Äiá»u chá»‰nh container linh hoáº¡t hÆ¡n === */
+  width: 95vw; /* Chiáº¿m gáº§n háº¿t chiá»u rá»™ng mĂ n hĂ¬nh */
+  max-width: 800px; /* Giá»›i háº¡n trĂªn mĂ n hĂ¬nh lá»›n */
+  height: 55vh;
+  min-height: 380px;
+  max-height: 450px;
+  position: relative;
+  perspective: 1200px; /* Giáº£m perspective má»™t chĂºt Ä‘á»ƒ Ä‘á»¡ bá»‹ biáº¿n dáº¡ng */
+}
+
+.carousel,
+.card,
+.card::before {
+  position: absolute;
+}
+
+.carousel {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* THAY THáº¾ KHá»I .card CÅ¨ Báº°NG KHá»I NĂ€Y */
+.card {
+     will-change: transform!important;
+  /* BÆ¯á»C 1: Äáº·t má»™t chiá»u cao Cá» Äá»NH cho táº¥t cáº£ cĂ¡c card */
+   /* Rá»™ng: nhá» nháº¥t 150px, Æ°u tiĂªn 40vw, lá»›n nháº¥t 180px */
+  width: clamp(150px, 40vw, 180px);
+  /* Cao: nhá» nháº¥t 220px, Æ°u tiĂªn 58vw, lá»›n nháº¥t 260px */
+  height: clamp(220px, 58vw, 260px);
+
+  /* BÆ¯á»C 2: Sá»­ dá»¥ng Flexbox Ä‘á»ƒ kiá»ƒm soĂ¡t ná»™i dung bĂªn trong */
+  display: flex;
+  flex-direction: column; /* Sáº¯p xáº¿p cĂ¡c má»¥c theo cá»™t (trĂªn xuá»‘ng dÆ°á»›i) */
+  
+  /* CĂ¡c thuá»™c tĂ­nh trang trĂ­ giá»¯ nguyĂªn */
+  background: #fff;
+  padding: 0.8rem;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: box-shadow 0.3s, border-color 0.3s;
+  border: 6px solid #5c4033;
+}
+
+/* Khá»‘i .card:hover giá»¯ nguyĂªn, khĂ´ng cáº§n thay Ä‘á»•i */
+.card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* THAY THáº¾ KHá»I .card img CÅ¨ Báº°NG KHá»I NĂ€Y */
+/* THAY THáº¾ KHá»I .card img CÅ¨ Báº°NG KHá»I NĂ€Y */
+.card img {
+  /* CĂ¡c thuá»™c tĂ­nh layout cÆ¡ báº£n giá»¯ nguyĂªn */
+  order: -1;
+  width: 100%; /* Báº¯t buá»™c: áº¢nh pháº£i chiáº¿m toĂ n bá»™ chiá»u rá»™ng cá»§a card */
+  height: 150px; /* Báº¯t buá»™c: Äáº·t chiá»u cao Cá» Äá»NH vĂ  Äá»’NG NHáº¤T cho táº¥t cáº£ áº£nh */
+  flex-shrink: 0; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 0.5rem; 
+
+  /* ----- PHáº¦N FIX Lá»–I QUAN TRá»ŒNG NHáº¤T ----- */
+
+  /* BÆ¯á»C 1: NgÄƒn áº£nh bá»‹ mĂ©o (stretched/squashed) */
+  /* TrĂ¬nh duyá»‡t sáº½ tá»± láº¥p Ä‘áº§y khung 100% x 150px,
+     giá»¯ nguyĂªn tá»‰ lá»‡ áº£nh vĂ  cáº¯t Ä‘i pháº§n thá»«a.
+     ÄĂ¢y lĂ  thuá»™c tĂ­nh then chá»‘t. */
+  object-fit: cover;
+
+  /* BÆ¯á»C 2: Tá»‘i Æ°u hiá»ƒn thá»‹ Ä‘á»ƒ chá»‘ng má» */
+  /* Gá»£i Ă½ cho trĂ¬nh duyá»‡t Æ°u tiĂªn hiá»ƒn thá»‹ sáº¯c nĂ©t khi co giĂ£n áº£nh. */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+transform: translateZ(0);
+  backface-visibility: hidden;
+
+  
+  /* BÆ¯á»C 3 (NĂªn cĂ³): Cáº£i thiá»‡n hiá»‡u nÄƒng vĂ  trĂ¡nh lá»—i nhĂ¡y hĂ¬nh */
+  backface-visibility: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+
+.card p {
+   flex-grow: 1; /* Cho phĂ©p nĂ³ láº¥p Ä‘áº§y khĂ´ng gian dá»c cĂ²n láº¡i */
+  display: flex;
+  align-items: center; /* CÄƒn giá»¯a text theo chiá»u dá»c */
+  justify-content: center; /* CÄƒn giá»¯a text theo chiá»u ngang */
+  font-size: clamp(0.55rem, 2vw, 0.8rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: #b71c1c;
+  margin-top: 0.5rem;
+}
+
+.card h2 {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #8a6c5d;
+}
+
+.card.is-active {
+  box-shadow: 0 10px 30px rgba(92, 64, 51, 0.4), 0 0 20px rgba(220, 20, 60, 0.3);
+  border-color: #dc143c;
+}
+.card.text-only {
+  background: #fff;
+  justify-content: center;
+}
+.card.image-only img {
+    width: 100%!important;
+    height: 100%!important;
+    object-fit: cover!important; /* áº¢nh sáº½ láº¥p Ä‘áº§y card mĂ  khĂ´ng bá»‹ mĂ©o */
+    display: block;
+}
+
+.card.text-only p {
+  font-size: clamp(0.55rem, 2vw, 0.8rem); 
+  line-height: 1.5;
+  color: #a52a2a;
+}
+
+.carousel-container.is-dragging,
+.carousel-container.is-dragging .card {
+  cursor: grabbing;
+}
+
+.controls1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem; /* TÄƒng khoáº£ng cĂ¡ch vá»›i carousel */
+  z-index: 10;
+}
+
+.controls1 button {
+  touch-action: manipulation!important;
+  background: #dc143c;
+  color: #fff;
+  border: none;
+  width: 45px; /* NĂºt nhá» hÆ¡n má»™t chĂºt */
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 15px;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.controls1 button:hover {
+  background: #8e0000;
+  transform: scale(1.05);
+}
+/* --- Há»† THá»NG THĂ”NG BĂO, Táº¢I VĂ€ Lá»–I --- */
+.status-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(245, 232, 220, 0.95); /* MĂ u ná»n giá»‘ng body nhÆ°ng cĂ³ Ä‘á»™ má» */
+  display: none; /* Máº·c Ä‘á»‹nh áº©n Ä‘i */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  color: var(--primary-clr);
+  text-align: center;
+  padding: 1rem;
+}
+
+.status-overlay.is-active {
+  display: flex; /* Hiá»‡n lĂªn khi cĂ³ class is-active */
+}
+
+.status-overlay p {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: #dc143c; /* MĂ u Ä‘á» tháº«m */
+}
+
+/* --- HIá»†U á»¨NG LOADING TRĂI TIM Äáº¬P Dá»„ THÆ¯Æ NG --- */
+.spinner {
+  /* Giáº£m má»™t ná»­a tá»« 70px -> 35px */
+  height: 35px;
+  width: 35px;
+  
+  background-color: #dc143c; 
+  position: relative;
+  transform: rotate(-45deg);
+  animation: beat 1.2s ease-in-out infinite;
+}
+
+.spinner::before,
+.spinner::after {
+  content: "";
+  /* Giáº£m má»™t ná»­a tá»« 70px -> 35px */
+  height: 35px;
+  width: 35px;
+  
+  background-color: #dc143c;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.spinner::before {
+  /* Giáº£m má»™t ná»­a tá»« -35px -> -17.5px */
+  top: -17.5px;
+  left: 0;
+}
+
+.spinner::after {
+  /* Giáº£m má»™t ná»­a tá»« 35px -> 17.5px */
+  top: 0;
+  left: 17.5px;
+}
+
+/* Keyframes giá»¯ nguyĂªn, khĂ´ng cáº§n thay Ä‘á»•i */
+@keyframes beat {
+  0%, 100% {
+    transform: rotate(-45deg) scale(1);
+  }
+  25% {
+    transform: rotate(-45deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(-45deg) scale(1);
+  }
+  75% {
+    transform: rotate(-45deg) scale(0.9);
+  }
+}
+
+    </style>
+    <!-- INLINE STYLES -->
+    <style>
+        .btn-audio-toggle {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .music-status {
+            display: flex;
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            z-index: 9999;
+            align-items: center;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+        .music-status .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #57162F;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- LOADING & ERROR STATES -->
+    <div id="loader" class="status-overlay is-active">
+        <div class="spinner"></div>
+        <p>Đang tải dữ liệu Ký ức...</p>
+    </div>
+    <div id="error-message" class="status-overlay">
+        <p>Rất tiếc, đã có lỗi xảy ra. Vui lòng thử lại sau.</p>
+    </div>
+    
+    <!-- Nút quay lại -->
+    <button id="back-to-index" class="romantic-back-btn">
+        <span class="heart">❤</span> <span class="back-text">← Quay lại</span>
+    </button>
+    <style>
+    .romantic-back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 10000;
+        background: linear-gradient(90deg, #ffdde1 0%, #ee9ca7 100%);
+        color: #b71c1c;
+        border: none;
+        padding: 12px 26px 12px 20px;
+        border-radius: 30px;
+        box-shadow: 0 4px 18px 0 rgba(220,20,60,0.13), 0 1.5px 8px 0 rgba(255,192,203,0.18);
+        font-weight: bold;
+        font-family: 'Dancing Script', 'Segoe Script', 'Comic Sans MS', cursive, sans-serif;
+        font-size: 1.15rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
+        outline: none;
+        animation: romantic-glow 2.5s infinite alternate;
+    }
+    .romantic-back-btn .heart {
+        font-size: 1.3em;
+        color: #ff4b6e;
+        filter: drop-shadow(0 0 4px #ffb6c1);
+        animation: heart-beat 1.2s infinite;
+        margin-right: 2px;
+    }
+    .romantic-back-btn .back-text {
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px #fff6f6, 0 0 8px #ffb6c1;
+    }
+    .romantic-back-btn:hover {
+        background: linear-gradient(90deg, #ee9ca7 0%, #ffdde1 100%);
+        box-shadow: 0 6px 24px 0 rgba(220,20,60,0.22), 0 2.5px 12px 0 rgba(255,192,203,0.22);
+        transform: scale(1.04) rotate(-2deg);
+    }
+    @keyframes heart-beat {
+        0%, 100% { transform: scale(1); }
+        20% { transform: scale(1.18); }
+        40% { transform: scale(0.95); }
+        60% { transform: scale(1.12); }
+        80% { transform: scale(0.98); }
+    }
+    @keyframes romantic-glow {
+        0% { box-shadow: 0 4px 18px 0 rgba(220,20,60,0.13), 0 1.5px 8px 0 rgba(255,192,203,0.18); }
+        100% { box-shadow: 0 0 32px 6px #ffb6c1, 0 0 12px 2px #ee9ca7; }
+    }
+    </style> 
+    </head>
+    <body>
+    <script>
+    document.getElementById('back-to-index').onclick = function() {
+        // Chuyển về index.html và bỏ qua màn hình khóa nếu có
+        window.location.href = 'index.html#main';
+    };
+    </script>
+    <!-- MAIN CONTENT -->
+    <h2 id="title">vòng quay ký ức</h2>
+    
+    <!-- CAROUSEL SECTION -->
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <!-- Cards will be inserted here by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- CONTROLS -->
+    <div class="controls1">
+        <button class="prev" id="prev">←</button>
+        <button class="next" id="next">→</button>
+    </div>
+    
+    <!-- AUDIO TOGGLE BUTTON -->
+    <button id="toggle-audio" class="text-white btn-audio-toggle" style="position: absolute; top: 10px; right: 10px; z-index: 999;">
+        <i id="audio-icon" class="text-white  fa-solid fa-volume-high"></i>
+    </button>
+
+    <!-- SCRIPTS -->
+    <!-- GSAP LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    
+    <!-- DATA CONFIGURATION -->
+    <script>
+        window.dataRoundaboutLoveLoom = {"template":"roundabout","data":{"text":[],"type_music":"system","music_id":"/music/chungtacuahientay.mp3","backgroundMusic":"","image":["https:\/\/loveloom.click\/view\/3:AgACAgUAAyEGAASsk8AHAAImMGhP3Kd53evVCiRNIkhGSQWDqzAkAALsxzEbnsmAVmN734Arc5zGAQADAgADbQADNgQ.jpg","https:\/\/loveloom.click\/view\/3:AgACAgUAAyEGAASsk8AHAAJb6WhXRkYjtejYXOuFE5KvlnMIluZeAALjyzEbnA25Vnl9sqgVGVyUAQADAgADeAADNgQ.jpg","https:\/\/loveloom.click\/view\/3:AgACAgUAAyEGAASsk8AHAAIDUWhLwakBdpEi95Vlj5O0envZpCypAAL3wzEbn5xgVo9bI6UaCpjFAQADAgADeAADNgQ.jpg","https:\/\/loveloom.click\/view\/3:AgACAgUAAyEGAASsk8AHAAIDUGhLwaduGQR1E-CabXHIom_yc_23AAL2wzEbn5xgVhiI4u64x_PlAQADAgADbQADNgQ.jpg","https:\/\/loveloom.click\/view\/3:AgACAgUAAyEGAASsk8AHAAJb5mhXRkIBb5H8Zu6-_BOXkKTzJ96dAALiyzEbnA25VqBX5u0JmGclAQADAgADbQADNgQ.jpg","https:\/\/loveloom.click\/view\/0:AgACAgUAAyEGAASn1Y1gAAJbTmhXRkHR72gUykZbrGKSIYGO2ulfAALsyTEbsM-5VlQXAjnx4rlgAQADAgADbQADNgQ.jpg","https:\/\/loveloom.click\/view\/2:AgACAgUAAyEGAASjr4jMAAJbtWhXRkAYa_qQ6BoSwdWKQrRnvrLHAAL5xzEb14O4VqqFE0Bv0srrAQADAgADeAADNgQ.jpg","https:\/\/loveloom.click\/view\/0:AgACAgUAAyEGAASn1Y1gAAItu2hQtXQ8KakYmPVg8jJoIJ2VpbefAAJ8yDEbLY2IVnOQ91dcNd0JAQADAgADbQADNgQ.jpg","https:\/\/loveloom.click\/view\/1:AgACAgUAAyEGAASiN5Z0AAJccWhXRkef7kdYajxSKwPD-zHs1asdAAKBxTEbEWW5VprUsZU59gjpAQADAgADbQADNgQ.jpg"]}};
+        
+        //["https://loveloom.click/view/1:AgACAgUAAyEGAASiN5Z0AALwrWh3N8lFBiVwzFhJRjByiq4ZKI-QAAK7yzEb6kS4V2XspmcuvucbAQADAgADeQADNgQ.jpg","https://loveloom.click/view/1:AgACAgUAAyEGAASiN5Z0AALwrGh3N8ZsKtvCJt-Oi3VY44oKaCabAAK6yzEb6kS4VyasaZaoriz_AQADAgADeQADNgQ.jpg","https://loveloom.click/view/2:AgACAgUAAyEGAASjr4jMAALvPGh3N8O_H5reu4X5rgnanzlpLfxLAAIYxTEbaT_BVz4ehwFDZ524AQADAgADdwADNgQ.jpg","https://loveloom.click/view/0:AgACAgUAAyEGAASn1Y1gAALtsWh3N8ARZw3RtSqqiWq1ZvWoayNpAAJdxjEbjy3BV276L13BRG41AQADAgADeQADNgQ.jpg","https://loveloom.click/view/2:AgACAgUAAyEGAASjr4jMAALvO2h3N762A2_ZgLGRvTUtXszAxuhdAAIXxTEbaT_BV-5N6lhkISHAAQADAgADeQADNgQ.jpg","https://loveloom.click/view/0:AgACAgUAAyEGAASn1Y1gAALtsGh3N7wfOsoIcRevFmrMtR_fM7wkAAJcxjEbjy3BV0vvY1r3broDAQADAgADeQADNgQ.jpg","https://loveloom.click/view/0:AgACAgUAAyEGAASn1Y1gAALtr2h3N7nS7joWUOWi1FtGNLRXzgUrAAJbxjEbjy3BV1bsfxHy4QlmAQADAgADeQADNgQ.jpg","https://loveloom.click/view/2:AgACAgUAAyEGAASjr4jMAALvOmh3N7YpGgGeFjUj3S63K4KCmlLUAAIWxTEbaT_BV-9YjIzv4A-lAQADAgADeQADNgQ.jpg","https://loveloom.click/view/2:AgACAgUAAyEGAASjr4jMAALvOWh3N7SH9giM0Fqz85hAtUOabA8qAAIVxTEbaT_BV0WwgT6pu4wcAQADAgADeQADNgQ.jpg"]}};
+    </script>
+    
+    <!-- MAIN APPLICATION SCRIPT -->
+    <script>
+        // Hàm chính để khởi chạy toàn bộ ứng dụng
+        function main() {
+            // --- CÁC HÀM QUẢN LÝ THÔNG BÁO ---
+            const loader = document.getElementById('loader');
+            const errorMessage = document.getElementById('error-message');
+        
+            function showLoader() {
+                if (loader) loader.classList.add('is-active');
+            }
+        
+            function hideLoader() {
+                if (loader) loader.classList.remove('is-active');
+            }
+        
+            function showError(message = "Rất tiếc, đã có lỗi xảy ra. Vui lòng thử lại sau.") {
+                if (errorMessage) {
+                    errorMessage.querySelector('p').textContent = message;
+                    errorMessage.classList.add('is-active');
+                }
+                hideLoader(); // ẩn loader khi có lỗi
+            }
+        
+            // --- KIỂM TRA TƯƠNG THÍCH TRÌNH DUYỆT ---
+            function checkCompatibility() {
+                // Kiểm tra các API hiện đại mà code có thể đang dùng
+                if (typeof Promise === "undefined" || typeof WeakMap === "undefined" || typeof gsap === "undefined") {
+                    showError("Trình duyệt của bạn quá cũ hoặc không hỗ trợ các tính năng cần thiết để chạy hiệu ứng này. Vui lòng cập nhật trình duyệt.");
+                    return false;
+                }
+                return true;
+            }
+        
+            // --- BẮT ĐẦU THỰC THI ---
+        
+            // Hiện màn hình tải ngay lập tức
+            showLoader();
+        
+            // Kiểm tra tương thích
+            if (!checkCompatibility()) {
+                return; // Dừng lại nếu trình duyệt không tương thích
+            }
+            // Hàm để tạo các thẻ (card) từ dữ liệu được cung cấp - PHIÊN BẢN AN TOÀN VÀ MẠNH MẼ
+            // HÀM MỚI: Dùng để phát âm thanh click một cách tin cậy
+            function playClickSound() {
+                // Thay đổi đường dẫn này tới file âm thanh click của bạn
+                const clickSound = new Audio('/music/anhlacuaem.mp3');
+                clickSound.volume = 0.5; // Điều chỉnh âm lượng nếu cần
+                // .play() được gọi trực tiếp từ sự kiện click của người dùng nên sẽ luôn hoạt động
+                clickSound.play().catch(error => console.warn("Không thể phát âm thanh click:", error));
+            }
+        
+        
+            // === THAY THẾ HOÀN TOÀN HÀM CŨ BẰNG PHIÊN BẢN MỞ RỘNG NÀY ===
+            function generateCardsFromData() {
+                try {
+                    const carousel = document.getElementById("carousel");
+                    if (!carousel) {
+                        console.error("Lỗi nghiêm trọng: Phần tử 'carousel' không được tìm thấy.");
+                        return;
+                    }
+        
+                    if (!window.dataRoundaboutLoveLoom || !window.dataRoundaboutLoveLoom.data) {
+                        throw new Error("Lỗi: Dữ liệu (dataRoundaboutLoveLoom) không tồn tại hoặc sai cấu trúc.");
+                    }
+        
+                    const data = window.dataRoundaboutLoveLoom.data;
+                    const texts = Array.isArray(data.text) ? data.text : [];
+                    const images = Array.isArray(data.image) ? data.image : [];
+        
+                    // THAY ĐỔI 1: Thoát chỉ khi CẢ HAI mảng đều rỗng
+                    if (texts.length === 0 && images.length === 0) {
+                        console.warn("Dữ liệu rỗng. Không có card nào được tạo.");
+                        return;
+                    }
+        
+                    // --- LOGIC CŨ VẪN ĐƯỢC GIỮ NGUYÊN ---
+                    // Sắp xếp text để gán các đoạn ngắn cho card có ảnh
+                    let textObjects = texts.map(text => ({ text, length: text.length }));
+                    textObjects.sort((a, b) => a.length - b.length);
+                    const shortTexts = textObjects.slice(0, images.length).map(item => item.text);
+                    const longTexts = textObjects.slice(images.length).map(item => item.text);
+                    // --- KẾT THÚC LOGIC CŨ ---
+        
+                    // THAY ĐỔI 2: Số lượng card được quyết định bởi mảng dài hơn
+                    const totalCards = Math.max(texts.length, images.length);
+        
+                    for (let i = 0; i < totalCards; i++) {
+                        const card = document.createElement("div");
+                        card.classList.add("card");
+                        card.dataset.index = i;
+        
+                        let paragraph = null;
+                        let imageElement = null;
+        
+                        // THAY ĐỔI 3: Logic tạo card linh hoạt hơn
+                        const imageUrl = images[i];
+                        const hasImage = imageUrl && typeof imageUrl === 'string';
+                        const textForImageCard = shortTexts[i]; // Lấy từ logic cũ
+                        const textForTextOnlyCard = longTexts[i - images.length]; // Lấy từ logic cũ
+        
+                        if (hasImage) {
+                            // Ưu tiên tạo ảnh trước nếu có
+                            imageElement = document.createElement("img");
+                            imageElement.src = imageUrl;
+                            imageElement.alt = 'LoveLoom';
+                            imageElement.loading = 'lazy';
+                            imageElement.onerror = () => { imageElement.style.display = 'none'; };
+        
+                            if (textForImageCard) {
+                                // Nếu có text tương ứng cho card ảnh này
+                                card.classList.add("with-image");
+                                paragraph = document.createElement("p");
+                                paragraph.innerHTML = textForImageCard;
+                            } else {
+                                // Nếu không có text, đây là card chỉ có ảnh
+                                card.classList.add("image-only");
+                            }
+                        } else if (textForTextOnlyCard) {
+                            // Nếu không có ảnh ở vị trí này, nhưng có text
+                            card.classList.add("text-only");
+                            paragraph = document.createElement("p");
+                            paragraph.innerHTML = textForTextOnlyCard;
+                        }
+        
+                        // Gắn các phần tử đã tạo vào card
+                        if (paragraph) {
+                            card.appendChild(paragraph);
+                        }
+                        if (imageElement) {
+                            card.appendChild(imageElement);
+                        }
+        
+                        // Chỉ thêm card vào DOM nếu nó thực sự có nội dung
+                        if (imageElement || paragraph) {
+                            carousel.appendChild(card);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Đã xảy ra lỗi không mong muốn trong quá trình tạo card:", error);
+                }
+            }
+        
+            // === BẮT ĐẦU THỰC THI SCRIPT ===
+            try {
+                generateCardsFromData();
+        
+                const carousel = document.getElementById("carousel");
+                const cards = document.querySelectorAll(".card");
+                const prevBtn = document.getElementById("prev");
+                const nextBtn = document.getElementById("next");
+                const carouselContainer = document.querySelector(".carousel-container");
+                const totalCards = cards.length;
+        
+                if (totalCards === 0) {
+                    console.warn("Không có thẻ nào được tạo ra.");
+                    document.body.innerHTML = "<h1>Không có dữ liệu để hiển thị.</h1>";
+                    return; // Dừng lại nếu không có thẻ nào
+                } else {
+                    let isNavigating = false; // <<< THÊM DÒNG NÀY: Cờ để chặn spam click
+                    const animationDuration = 800; // Thời gian animation (ms), khớp với duration trong gsap.to
+                    let radius = 0; // Sẽ được tính toán tự động
+                    let currentAngle = 0;
+                    let autoRotateInterval = null;
+                    let isDragging = false;
+        
+                    const autoRotateDelay = 800;
+                    const restartDelay = 3000;
+                    const angleStep = 360 / totalCards;
+        
+                    // === HÀM LÕI: TÍNH TOÁN VÀ ĐIỀU CHỈNH LAYOUT TRIỆT ĐỂ ===
+                    function adjustLayout() {
+                        const containerWidth = carouselContainer.offsetWidth;
+                        const cardWidth = cards[0].offsetWidth;
+                        const aestheticRadius = cardWidth * 0.8;
+                        const safeRadius = (containerWidth - cardWidth) / 2;
+                        const newRadius = Math.min(safeRadius, aestheticRadius);
+                        const newPerspective = containerWidth * 1.5;
+        
+                        gsap.set(carouselContainer, { perspective: newPerspective, perspectiveOrigin: "50% 50%" });
+        
+                        if (radius !== newRadius) {
+                            radius = newRadius;
+                            positionCards(currentAngle, true);
+                        }
+                    }
+        
+                    function positionCards(targetAngle, withAnimation = false) {
+                        cards.forEach((card, index) => {
+                            const angle = index * angleStep + targetAngle;
+                            const x = radius * Math.cos(angle * Math.PI / 180);
+                            const z = radius * Math.sin(angle * Math.PI / 180);
+                            const rotationY = -angle;
+        
+                            const transform = { x, z, rotationY, transformOrigin: "center center" };
+        
+                            if (withAnimation) {
+                                gsap.to(card, { ...transform, duration: 0.8, ease: "power3.inOut" });
+                            } else {
+                                gsap.set(card, transform);
+                            }
+                        });
+                    }
+        
+                    // --- Các hàm điều khiển và sự kiện (giữ nguyên) ---
+        
+                    const tiltEffect = {
+                        x: gsap.quickTo(carousel, "rotationY", { duration: 0.8, ease: "power3.out" }),
+                        y: gsap.quickTo(carousel, "rotationX", { duration: 0.8, ease: "power3.out" })
+                    };
+                    function onMouseMove(e) {
+                        if (isDragging) return;
+                        const { clientX, clientY } = e;
+                        const { innerWidth, innerHeight } = window;
+                        const xPercent = (clientX / innerWidth - 0.5) * 2;
+                        const yPercent = (clientY / innerHeight - 0.5) * 2;
+                        tiltEffect.x(xPercent * 5);
+                        tiltEffect.y(-yPercent * 5);
+                    }
+        
+                    let startX = 0;
+                    let startAngle = 0;
+                    function onPointerDown(e) {
+                        if (e.target.closest('.controls1 button')) return;
+                        isDragging = true;
+                        startX = e.clientX || e.touches[0].clientX;
+                        startAngle = currentAngle;
+                        carouselContainer.classList.add('is-dragging');
+                        pauseAutoRotation(false);
+                        window.addEventListener('pointermove', onPointerMove, { passive: true });
+                        window.addEventListener('pointerup', onPointerUp);
+                    }
+                    function onPointerMove(e) {
+                        if (!isDragging) return;
+                        const currentX = e.clientX || e.touches[0].clientX;
+                        const deltaX = currentX - startX;
+                        const dragAngle = (deltaX / window.innerWidth) * -180;
+                        positionCards(startAngle + dragAngle, false);
+                    }
+                    function onPointerUp(e) {
+                        if (!isDragging) return;
+                        isDragging = false;
+                        carouselContainer.classList.remove('is-dragging');
+                        window.removeEventListener('pointermove', onPointerMove);
+                        window.removeEventListener('pointerup', onPointerUp);
+                        const currentX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || startX;
+                        const deltaX = currentX - startX;
+                        const dragAngle = (deltaX / window.innerWidth) * -180;
+                        currentAngle += dragAngle;
+                        const closestIndex = Math.round(currentAngle / angleStep);
+                        currentAngle = closestIndex * angleStep;
+                        positionCards(currentAngle, true);
+                        pauseAutoRotation(true);
+                    }
+        
+                     function updateCarousel(direction) {
+                        // Nếu đang chạy animation, không làm gì cả
+                        if (isNavigating) return;
+                        isNavigating = true; // Đánh dấu là animation bắt đầu
+        
+                        currentAngle += (direction === "next" ? -1 : 1) * angleStep;
+                        positionCards(currentAngle, true);
+        
+                        // Dùng setTimeout để reset cờ sau khi animation kết thúc
+                        // Thời gian phải khớp với duration của animation trong `positionCards`
+                        setTimeout(() => {
+                            isNavigating = false;
+                        }, animationDuration);
+                    }
+                    function pauseAutoRotation(restart = false) {
+                        clearInterval(autoRotateInterval);
+                        if (restart) setTimeout(startAutoRotation, restartDelay);
+                    }
+                    function startAutoRotation() {
+                        clearInterval(autoRotateInterval);
+                        autoRotateInterval = setInterval(() => updateCarousel("next"), autoRotateDelay);
+                    }
+        
+                    // === KHỞI TẠO VÀ GÁN SỰ KIỆN ===
+                    function init() {
+                        gsap.set(cards, { opacity: 0 }); // ẩn card ban đầu
+                        gsap.from(carouselContainer, { opacity: 0, scale: 0.8, duration: 1, delay: 0.2, ease: "power3.out" });
+        
+                        setTimeout(() => {
+                            adjustLayout(); // Chạy hàm tính toán layout lần đầu
+                            gsap.to(cards, {
+                                opacity: 1,
+                                y: 0,
+                                scale: 1,
+                                stagger: 0.05,
+                                duration: 1,
+                                ease: "elastic.out(1, 0.75)",
+                                onComplete: () => {
+                                    hideLoader(); // ẩn màn hình tải khi animation cuối cùng hoàn tất
+                                    startAutoRotation();
+                                    // Cố gắng phát nhạc lần đầu (sẽ thất bại trên nhiều trình duyệt)
+                                    if (window.musicManager) {
+                                        window.musicManager.play();
+                                    }
+                                    // --- KẾT THÚC LOGIC SỬA LỖI BAN ĐẦU ---
+                                }
+                            });
+                            startAutoRotation();
+                        }, 300);
+        
+                        // --- LOGIC V7 CỦA BẠN - ĐÃ SỬA LỖI CUỐI CÙNG ---
+        
+                        // 1. BIẾN QUẢN LÝ TRẠNG THÁI
+                        let activeCard = null;
+                        let isTransitioning = false;
+                        let recentlyClicked = false;
+                        const originalStates = new WeakMap();
+        
+                        // 2. DỪNG/CHẠY CAROUSEL
+                        carouselContainer.addEventListener('mouseenter', () => {
+                            // THAY ĐỔI 1: Khi chuột vào khu vực lớn, DỪNG NGAY LẬP TỨC
+                            pauseAutoRotation(false);
+                        });
+        
+                        carouselContainer.addEventListener('mouseleave', () => {
+                            if (recentlyClicked) return;
+        
+                            if (activeCard && !isTransitioning) {
+                                const state = originalStates.get(activeCard);
+                                gsap.to(activeCard, { ...state, duration: 0.4, ease: "power2.out" });
+                                activeCard = null;
+                            }
+        
+                            // THAY ĐỔI 2: Khi chuột rời khu vực lớn, CHẠY LẠI
+                            pauseAutoRotation(true);
+                        });
+        
+                        // 3. SỰ KIỆN CHO NÚT BẤM VÀ TỪNG CARD
+                        nextBtn.addEventListener("click", () => { playClickSound();  pauseAutoRotation(true); updateCarousel("next"); });
+                        prevBtn.addEventListener("click", () => { playClickSound();  pauseAutoRotation(true); updateCarousel("prev"); });
+        
+                        cards.forEach(card => {
+                            // KHI DI CHUỘT VÀO MỘT CARD BẤT KỲ
+                            // Logic này đã đúng, không cần thay đổi.
+                            // Nó sẽ tự động dừng vì sự kiện mouseenter của carouselContainer đã được kích hoạt.
+                            card.addEventListener("mouseenter", () => {
+                                 playClickSound();
+                                if (isTransitioning || activeCard === card) return;
+                                isTransitioning = true;
+        
+                                const tl = gsap.timeline({
+                                    onComplete: () => { isTransitioning = false; }
+                                });
+        
+                                if (activeCard) {
+                                    const oldState = originalStates.get(activeCard);
+                                    if (oldState) {
+                                        tl.to(activeCard, { ...oldState, duration: 0.4, ease: "power2.out" }, 0);
+                                    }
+                                }
+        
+                                activeCard = card;
+                                originalStates.set(card, {
+                                    rotationY: gsap.getProperty(card, "rotationY"),
+                                    scale: 1,
+                                    z: gsap.getProperty(card, "z"),
+                                    x: gsap.getProperty(card, "x")
+                                });
+        
+                                tl.to(card, {
+                                    scale: 1.15,
+                                    rotationY: 0,
+                                    z: radius + 100,
+                                    x: 0,
+                                    duration: 0.4,
+                                    ease: "power2.out",
+                                    overwrite: true
+                                }, 0);
+                            });
+        
+                            // LOGIC CLICK ĐÃ ĐÚNG, GIỮ NGUYÊN
+                            card.addEventListener('click', (event) => {
+                                 playClickSound();
+                                if (activeCard === event.currentTarget) {
+                                    return;
+                                }
+                                if (isTransitioning) return;
+                                recentlyClicked = true;
+                                pauseAutoRotation(true);
+        
+                                const clickedIndex = parseInt(card.dataset.index, 10);
+                                const targetAngle = -clickedIndex * angleStep;
+        
+                                // --- LOGIC TÍNH ĐƯỜNG ĐI NGẮN NHẤT ---
+                                const currentRot = (currentAngle % 360 + 360) % 360;
+                                const targetRot = (targetAngle % 360 + 360) % 360;
+                                let diff = targetRot - currentRot;
+                                if (Math.abs(diff) > 180) {
+                                    diff = diff > 0 ? diff - 360 : diff + 360;
+                                }
+                                const finalAngle = currentAngle + diff;
+                                // --- KẾT THÚC LOGIC TÍNH TOÁN ---
+        
+                                positionCards(finalAngle, true);
+                                currentAngle = finalAngle; // Cập nhật góc cuối cùng
+        
+                                setTimeout(() => { recentlyClicked = false; }, 500);
+                            });
+                        });
+                        // --- KẾT THÚC LOGIC ---
+                        document.addEventListener("visibilitychange", () => {
+                            if (document.hidden) {
+                                // Nếu người dùng chuyển sang tab khác, dừng vòng quay
+                                pauseAutoRotation(false);
+                            } else {
+                                // Nếu người dùng quay lại tab, khởi động lại vòng quay
+                                pauseAutoRotation(true);
+                            }
+                        });
+        
+                        window.addEventListener("mousemove", onMouseMove);
+                        window.addEventListener('pointerdown', onPointerDown);
+                        window.addEventListener("resize", adjustLayout);
+                        // =========================================================================
+                        // === LOGIC MỞ KHÓA ÂM THANH HOÀN CHỈNH - HOẠT ĐỘNG TRÊN MỌI THIẾT BỊ ===
+                        // =========================================================================
+                        const eventsToUnlockAudio = ['pointerdown', 'keydown', 'touchstart'];
+        
+                        function unlockAudioOnFirstInteraction() {
+                            if (window.musicManager && !window.musicManager.isUnlocked) {
+                                console.log('Phát hiện tương tác người dùng, tiến hành mở khóa và phát nhạc.');
+        
+                                // Chỉ cần gọi play(), logic phức tạp đã được đưa vào musicManager.
+                                window.musicManager.play();
+        
+                                // Quan trọng: Sau khi đã cố gắng mở khóa, hãy xóa các trình nghe sự kiện này đi.
+                                // Điều này đảm bảo nó chỉ chạy một lần duy nhất.
+                                eventsToUnlockAudio.forEach(event => {
+                                    window.removeEventListener(event, unlockAudioOnFirstInteraction);
+                                });
+                            }
+                        }
+        
+                        eventsToUnlockAudio.forEach(event => {
+                            window.addEventListener(event, unlockAudioOnFirstInteraction, { passive: true });
+                        });
+                        // =========================================================================
+                    }
+        
+                    init(); // Chạy hàm khởi tạo
+        
+                }
+            } catch (error) {
+                console.error("Lỗi trong quá trình khởi tạo ứng dụng:", error.message);
+                showError(error.message); // Hiển thị thông báo lỗi cho người dùng
+            }
+        }
+        window.addEventListener('load', main);
+    </script>
+    
+    <!-- MUSIC MANAGER SCRIPT -->
+    <script>
+        // Thay thế toàn bộ đối tượng musicManager cũ bằng cái này
+        const musicManager = {
+            // Properties
+            audio: null,
+            isUnlocked: false, // << QUAN TRỌNG: Thêm trạng thái "đã mở khóa"
+            state: 'idle', // idle, loading, ready, playing, paused, error
+            tokenData: null,
+
+            _setupAudio(sourceUrl = null) {
+                // Giữ nguyên logic này
+                let audioSrc = sourceUrl || window.dataRoundaboutLoveLoom?.data?.backgroundMusic;
+                if (!audioSrc) {
+                    // Thay đổi nhỏ: Sử dụng một đường dẫn mặc định an toàn hơn
+                    audioSrc = './music/anhlacuaem.mp3'; // <-- Đảm bảo bạn có file này
+                    console.warn("Không tìm thấy cấu hình nhạc, sử dụng nhạc mặc định.");
+                }
+                this.audio = new Audio(audioSrc);
+                this.audio.loop = true;
+                this.audio.volume = 0.7;
+                this.attachEventListeners();
+                // Không cần gán window.galaxyAudio nữa trừ khi bạn dùng nó ở nơi khác
+                this.updateState('ready');
+            },
+
+            
+            // ===================================================================
+            // ===== CẬP NHẬT QUAN TRỌNG NHẤT: Phương thức play() "thông minh" =====
+            // ===================================================================
+            play() {
+                // Nếu chưa có audio hoặc chưa sẵn sàng, không làm gì cả
+                if (!this.audio || this.state === 'loading') {
+                    return Promise.reject(new Error("Audio chưa sẵn sàng."));
+                }
+
+                // Nếu đang chạy rồi thì thôi
+                if (!this.audio.paused) {
+                    return Promise.resolve();
+                }
+
+                // Cố gắng phát nhạc
+                const playPromise = this.audio.play();
+
+                playPromise.then(() => {
+                    // THÀNH CÔNG: Đánh dấu đã mở khóa và cập nhật trạng thái
+                    this.isUnlocked = true;
+                    this.updateState('playing');
+                }).catch(error => {
+                    // THẤT BẠI: (Thường là do chính sách Autoplay)
+                    if (error.name === 'NotAllowedError') {
+                        console.warn("Autoplay bị chặn. Cần người dùng tương tác.");
+                        // Giữ trạng thái là 'paused' hoặc 'ready' để lần sau có thể thử lại
+                        this.updateState('paused');
+                    } else {
+                        console.error("Lỗi khi phát nhạc:", error);
+                        this.updateState('error');
+                    }
+                });
+
+                // Luôn trả về Promise để code bên ngoài có thể xử lý nếu cần
+                return playPromise;
+            },
+
+            togglePlayback() {
+                if (!this.audio || this.state === 'loading') {
+                    console.warn("Nhạc chưa sẵn sàng.");
+                    return;
+                }
+
+                // Logic toggle đơn giản và hiệu quả
+                if (this.audio.paused) {
+                    this.play(); // Dùng hàm play() thông minh của chúng ta
+                } else {
+                    this.audio.pause();
+                }
+            },
+
+            // Các hàm còn lại giữ nguyên
+            updateState(newState) {
+                this.state = newState;
+                this.updateUI();
+            },
+
+            updateUI() {
+                const audioIcon = document.getElementById('audio-icon');
+                if (!audioIcon) return;
+
+                if (!this.audio || this.audio.paused) {
+                    audioIcon.classList.remove("fa-volume-high");
+                    audioIcon.classList.add("fa-volume-xmark");
+                } else {
+                    audioIcon.classList.remove("fa-volume-xmark");
+                    audioIcon.classList.add("fa-volume-high");
+                }
+            },
+
+            attachEventListeners() {
+                if (!this.audio) return;
+                this.audio.onplay = () => this.updateState('playing');
+                this.audio.onpause = () => this.updateState('paused');
+                this.audio.onvolumechange = () => this.updateUI();
+            },
+
+            // Các hàm fetchWithAuth và getToken giữ nguyên...
+             // Các hàm fetchWithAuth và getToken giữ nguyên...
+            async getToken() {
+                try {
+                    const res = await fetch('/token-api-mp3');
+                    if (!res.ok) throw new Error('Không lấy được token');
+                    const data = await res.json();
+                    this.tokenData = data;
+                    return this.tokenData;
+                } catch (err) {
+                    console.error('Lỗi lấy token:', err);
+                    return null;
+                }
+            },
+            async fetchWithAuth(url) {
+                await this.getToken();
+
+                if (!this.tokenData) throw new Error('Không có token xác thực');
+
+                const headers = {
+                    'X-Auth-Token': this.tokenData.token,
+                    'X-Auth-Timestamp': this.tokenData.timestamp,
+                    'X-Client-Key': this.tokenData.clientKey,
+                    'X-Auth-Nonce': this.tokenData.nonce,
+                };
+
+                let res = await fetch(url, {
+                    headers
+                });
+
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    console.error(`Lỗi response (${res.status}):`, errorText);
+                    if (res.status === 403) {
+                        await this.getToken();
+                        if (!this.tokenData) throw new Error('Không có token xác thực');
+
+                        const newHeaders = {
+                            'X-Auth-Token': this.tokenData.token,
+                            'X-Auth-Timestamp': this.tokenData.timestamp,
+                            'X-Client-Key': this.tokenData.clientKey,
+                            'X-Auth-Nonce': this.tokenData.nonce,
+                        };
+
+                        res = await fetch(url, {
+                            headers: newHeaders
+                        });
+
+                        if (!res.ok) {
+                            const errText = await res.text();
+                            throw new Error(`Request lỗi sau khi refresh token: ${res.status}`);
+                        }
+                    } else {
+                        throw new Error(`Request lỗi: ${res.status}`);
+                    }
+                }
+
+                return res;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.musicManager = musicManager;
+            musicManager.init();
+
+            const toggleBtn = document.getElementById("toggle-audio");
+            toggleBtn.addEventListener("click", () => musicManager.togglePlayback());
+        });
+    </script>
+    <script>
+    // Chặn chuột phải
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+    });
+
+    // Chặn phím tắt
+    document.addEventListener("keydown", function(e) {
+      // Dùng tổ hợp phím Ctrl + ...
+      if (e.ctrlKey) {
+        const blocked = ['u', 's', 'c', 'x', 'v', 'p', 'a'];
+        if (blocked.includes(e.key.toLowerCase())) {
+          e.preventDefault();
+        }
+      }
+
+      // Chặn F12
+      if (e.key === "F12") {
+        e.preventDefault();
+      }
+
+      // Chặn Ctrl+Shift+I / J / C
+      if (e.ctrlKey && e.shiftKey) {
+        const blockedCombo = ['i', 'j', 'c'];
+        if (blockedCombo.includes(e.key.toLowerCase())) {
+          e.preventDefault();
+        }
+      }
+    });
+  </script>
+</body>
+    </html>

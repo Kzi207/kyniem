@@ -102,5 +102,5 @@ Mọi thắc mắc hoặc góp ý, liên hệ: Facebook (https://www.facebook.co
 ## Changelog
 - 2023-07-10: Bản v2.0, sửa lỗi không thể quay lại từ vòng quay.
 
-**Sễ update thiêm tính năng niếu nghĩ ra thiêm cái :))))**
+**Sễ update thiêm tính năng niếu nghĩ ra thiêm cái mới:))))**
 

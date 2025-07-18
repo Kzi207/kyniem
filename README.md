@@ -11,7 +11,7 @@ Website cá nhân lãng mạn, lưu giữ kỷ niệm, hình ảnh, âm nhạc v
   - Có màn hình khoá bảo vệ nội dung (nhập mã 8 số), giúp riêng tư hơn.
   - Khi quay lại từ vòng quay, có thể bỏ qua màn hình khoá.
 
-- **Vòng quay kỷ niệm (h.html):**
+- **Vòng quay kỷ niệm (vongquay.html):**
   - Hiển thị các hình ảnh, văn bản kỷ niệm dưới dạng carousel 3D xoay vòng.
   - Có nhạc nền lãng mạn, hiệu ứng chuyển động mượt mà.
   - Nút "Quay lại" đẹp, lãng mạn, trở về trang chủ chỉ với 1 click.
@@ -101,5 +101,5 @@ window.dataRoundaboutLoveLoom = {
 Mọi thắc mắc hoặc góp ý, liên hệ: Facebook (https://www.facebook.com/kzi207)
 ## Changelog
 - 2023-07-10: Bản v2.0, sửa lỗi không thể quay lại từ vòng quay.
-
+##Sễ update thiêm tính năng niếu nghĩ ra thiêm cái :))))
 

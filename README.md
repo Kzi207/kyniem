@@ -44,7 +44,7 @@ Website cá nhân lãng mạn, lưu giữ kỷ niệm, hình ảnh, âm nhạc v
 
 ## Cấu trúc thư mục
 - `index.html`: Trang chính của ứng dụng.
-- `h.html`: Trang vòng quay kỷ niệm (carousel hình ảnh, nhạc, text).
+- `vongquay.html`: Trang vòng quay kỷ niệm (carousel hình ảnh, nhạc, text).
 - `img/`: Thư mục chứa hình ảnh kỷ niệm.
 - `music/`: Thư mục chứa file nhạc nền.
 
@@ -98,7 +98,7 @@ window.dataRoundaboutLoveLoom = {
 - Hình ảnh, nhạc sử dụng trong thư mục là tài sản cá nhân hoặc đã được cho phép sử dụng.
 
 ---
-Mọi thắc mắc hoặc góp ý, liên hệ: Facebook (https://www.facebook.com/kzi207)
+Mọi thắc mắc hoặc góp ý, liên hệ: Facebook:ttps://www.facebook.com/kzi207
 ## Changelog
 - 2023-07-10: Bản v2.0, sửa lỗi không thể quay lại từ vòng quay.
 

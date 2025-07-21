@@ -1,0 +1,143 @@
+
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fef6f6;
+        }
+        
+        .heart-beat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .memory-card {
+            transition: all 0.3s ease;
+        }
+        
+        .memory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .music-player {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: white;
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        /* Mobile Menu Styles */
+        #mobile-menu {
+            width: 80%;
+            max-width: 300px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            right: 0;
+            left: auto;
+        }
+
+        #mobile-menu.show {
+            transform: translateX(0);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (min-width: 768px) {
+            #mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+
+        .quiz-container {
+            background: linear-gradient(to right, #9e0142, #d93b67);
+            padding: 40px 30px;
+            border-radius: 16px;
+            color: white;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .quiz-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .quiz-container p {
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background-color: rgba(0,0,0,0.2);
+            flex: 1;
+            min-width: 120px;
+            padding: 20px 10px;
+            border-radius: 12px;
+        }
+        .stat-box h3 {
+            font-size: 26px;
+            margin: 0 0 8px;
+        }
+        .stat-box span {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        #lock-screen { z-index: 9999; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .num-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 600; color: white; cursor: pointer; user-select: none; background: rgba(255,255,255,0.1); border: none; outline: none; transition: all 0.2s; }
+        .num-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
+        .num-btn.empty { visibility: hidden; }
+        .delete-btn { background: transparent; color: white; font-size: 20px; }
+        body {
+        -webkit-user-select: none; /* Chrome/Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+ */
+        user-select: none; /* Standard syntax */
+    }
+
+    /* Cho phép bôi đen trên các phần tử input và textarea */
+    input, textarea {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+    }

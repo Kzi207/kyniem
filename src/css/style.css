@@ -1,0 +1,64 @@
+
+        body.mistake-tab {
+          background: linear-gradient(to right, #ffdde1, #ee9ca7) !important;
+        }
+        .mistake-form-container h1 {
+          text-align: center;
+          color: #d72638;
+        }
+        .mistake-form-container form {
+          max-width: 600px;
+          background: white;
+          margin: auto;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .mistake-form-container label {
+          font-weight: bold;
+          margin-top: 15px;
+          display: block;
+        }
+        .mistake-form-container textarea {
+          width: 100%;
+          border-radius: 8px;
+          padding: 10px;
+          margin-top: 5px;
+          border: 1px solid #ccc;
+        }
+        .mistake-form-container button {
+          background: #ff6f61;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          margin-top: 20px;
+        }
+        .mistake-form-container .success {
+          text-align: center;
+          color: green;
+          font-weight: bold;
+          margin-top: 20px;
+        }
+        .mistake-entries {
+          max-width: 600px;
+          margin: 40px auto;
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .mistake-entries .entry {
+          border-left: 5px solid #ff6f61;
+          background: #fff9f9;
+          padding: 10px;
+          margin-bottom: 15px;
+          border-radius: 10px;
+        }
+        .mistake-entries .stats {
+          text-align: center;
+          font-size: 18px;
+          color: #333;
+          margin-top: 10px;
+        }

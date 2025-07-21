@@ -2,6 +2,7 @@
 # Kỷ Niệm - Profile KhanhDuy
 
 Website cá nhân lãng mạn, lưu giữ kỷ niệm, hình ảnh, âm nhạc và những lời nhắn yêu thương. Giao diện hiện đại, hiệu ứng đẹp mắt, dễ sử dụng trên cả máy tính và điện thoại.
+VUI LÒNG ĐỌC HƯỚNG DẨN SỬ DỤNG 
 
 ## Giới thiệu tính năng
 
@@ -11,7 +12,7 @@ Website cá nhân lãng mạn, lưu giữ kỷ niệm, hình ảnh, âm nhạc v
   - Có màn hình khoá bảo vệ nội dung (nhập mã 8 số), giúp riêng tư hơn.
   - Khi quay lại từ vòng quay, có thể bỏ qua màn hình khoá.
 
-- **Vòng quay kỷ niệm (h.html):**
+- **Vòng quay kỷ niệm (vongquay.html):**
   - Hiển thị các hình ảnh, văn bản kỷ niệm dưới dạng carousel 3D xoay vòng.
   - Có nhạc nền lãng mạn, hiệu ứng chuyển động mượt mà.
   - Nút "Quay lại" đẹp, lãng mạn, trở về trang chủ chỉ với 1 click.
@@ -85,10 +86,14 @@ window.dataRoundaboutLoveLoom = {
 - Thêm file ảnh vào thư mục `img/`, nhạc vào thư mục `music/`.
 - Sửa lại đường dẫn trong cấu hình cho đúng tên file vừa thêm.
 
-### 5. Chia sẻ hoặc lưu trữ
-- Có thể copy toàn bộ thư mục lên Google Drive, OneDrive, hoặc gửi cho bạn bè.
-- Không cần cài đặt gì thêm, chỉ cần mở file HTML là dùng được.
+### 5. Thư và lỗi của anh
+phần này phaỉ tạo api https://sheetdb.io không biết có thể ib mình nhé không dùng được phần thư và lỗi của anh niếu không tạo nhé
+fb https://facebook.com/kzi207
 
+các cột trong gg sheet db là:
+phần thư:    name|message|time
+lỗi của anh:   mistake|suggestion|time
+tạo api xong dán vào file src/js/app.js
 ## Yêu cầu
 - Trình duyệt hiện đại hỗ trợ ES6, CSS3.
 - Không cần cài đặt backend, chỉ cần mở file HTML bằng trình duyệt.
@@ -98,7 +103,7 @@ window.dataRoundaboutLoveLoom = {
 - Hình ảnh, nhạc sử dụng trong thư mục là tài sản cá nhân hoặc đã được cho phép sử dụng.
 
 ---
-Mọi thắc mắc hoặc góp ý, liên hệ: Facebook:ttps://www.facebook.com/kzi207
+Mọi thắc mắc hoặc góp ý, liên hệ: Facebook (https://www.facebook.com/kzi207)
 ## Changelog
 - 2023-07-10: Bản v2.0, sửa lỗi không thể quay lại từ vòng quay.
 
